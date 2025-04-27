@@ -1,5 +1,15 @@
 import libros
-libros = []
+import usuarios
+
+#--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
+
+listaLibros = []
+listaPrestamos = []
+listaUsuarios = []
+
+#----------------------------------------------------------------------
+
+
 '''
 . Estructurar el MAIN, inicializacion de  variables
 · Añadir libros al inventario
@@ -14,16 +24,11 @@ libros = []
 
 · Mostrar usuarios y sus préstamos
 '''
-libros.inicializarLibros()
 
 '''
 Tuplas:
 Categorias
-fechas, dni, codigo libro
-
-lista[-3::4]
-
-f
+fechas
 
 Listas de diccionarios:
 libros = [ libro, libro, ...]
@@ -35,10 +40,8 @@ libro = {
     titulo : El principito,
     autor,
     categoria,
-    anio,
     stock,
     codigo
-
 }
 
 
@@ -49,7 +52,7 @@ genero =
 usuario = {
     nombre,
     dni,
-    prestamos : [lista de prestamos]
+    prestamos : [matriz de prestamos]
 }
 
 prestamos = {
@@ -63,23 +66,51 @@ prestamos = {
 
 def imprimirMenu():
     '''
-        IMPRIME EL MENU
-    
-    
+        Imprime el menu principal
+        Entrada: Vacio
+        Salida: Vacio
     '''
     print('---------------------------')
-    print('Opciones: \n[1]Agregar libro\n[2]Ver inventario de libros')
+    print('Opciones: \n[1]Panel libros\n[2]Panel usuarios\n[3]Panel prestamos')
     print('[0]Para salir')
     print('---------------------------')
 
-
+#INICIO DEL PROGRAMA
 salir = 1
 while salir !=0:
     imprimirMenu()
     opcion = int(input('Escribir opcion: '))
+    opcionSubMenu = 0
     if opcion == 0:
         salir = 0 
     elif opcion == 1:
-        libros.libro_print()
+        #Submenu de libros
+        while opcionSubMenu != 3:
+            libros.imprimirSubMenu()
+            opcionSubMenu = int(input('Escribir opcion: '))
+            if opcionSubMenu == 1:
+                libros.mostrarLibros(listaLibros)
+            elif opcionSubMenu == 2:
+                listaLibros.append(libros.agregarLibro(listaLibros))
+                print('Libro agregado\n')
+            elif opcionSubMenu == 3:
+                print('Volviendo al menu principal...')
+            else:
+                print('Opcion invalida.')
+    elif opcion == 2:
+        #Submenu de usuarios
+        while opcionSubMenu != 3:
+            usuarios.imprimirSubMenu()
+            opcionSubMenu = int(input('Escribir opcion: '))
+            if opcionSubMenu == 1:
+                listaUsuarios.append(usuarios.agregarUsuario(listaUsuarios))
+                print('Usuario agregado\n')
+            elif opcionSubMenu == 2:
+                usuarios.mostrarUsuarios(listaUsuarios)
+            elif opcionSubMenu == 3:
+                print('Volviendo al menu principal...')
+            else:
+                print('Opcion invalida.')
+    
     else:
         print('Opcion invalida.')
