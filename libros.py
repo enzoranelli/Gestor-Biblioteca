@@ -87,6 +87,18 @@ def buscarLibroPorCodigo(codigo, listaLibros):
             return libro
     return -1
 
+def indiceLibroPorCodigo(codigo, listaLibros):
+    '''
+    Busca el indice de un libro por su codigo
+    Entrada: codigo, listaLibros
+    Salida: indice o -1 si no existe
+
+    '''
+    for i in range(len(listaLibros)):
+        if listaLibros[i]['codigo'] == codigo:
+            return i
+    return -1
+
 def elegirGenero():
     '''
     Solicita al usuario que elija un genero de libro

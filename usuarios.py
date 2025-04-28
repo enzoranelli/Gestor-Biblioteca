@@ -6,10 +6,22 @@ def imprimirSubMenu():
 
     '''
     print('---------------------------')
-    print("[1] Agregar Usuario")
-    print("[2] Mostrar Usuarios")
-    print("[3] Volver al menu principal")
+    print('[1] Agregar Usuario')
+    print('[2] Mostrar Usuarios')
+    print('[3] Buscar usuarios por dominio de correo')
+    print('[4] Volver al menu principal')
     print('---------------------------')
+
+def obtenerUsuariosPorMail(dominioMail, listaUsuarios):
+    '''
+    Busca los usuarios por su dominio de correO
+    Entrada: dominioMail, listaUsuarios
+    Salida: lista de usuarios con el dominio de correo especificado
+
+    '''
+    usuariosPorMail = [usuario for usuario in listaUsuarios if usuario['correo'][-len(dominioMail):] == dominioMail]
+   
+    return usuariosPorMail
 
 def mostrarUsuarios(usuarios):
     '''
@@ -49,7 +61,8 @@ def validarDni(dni):
     Salida: True si es valido, False si no lo es
 
     '''
-    return len(dni) <= 8 or not dni.isdigit()
+
+    return len(dni) <= 8 or dni.isdigit()
 
 
 def buscarUsuarioPorDni(dni, listaUsuarios):

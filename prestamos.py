@@ -15,7 +15,8 @@ def imprimirSubMenu():
     print('---------------------------')
     print("[1] Agregar Prestamo")
     print("[2] Mostrar Prestamos")
-    print("[3] Volver al menu principal")
+    print('[3] Cambiar estado de prestamo')
+    print("[4] Volver al menu principal")
     print('---------------------------')
 
 def mostrarPrestamos(listaPrestamos):
@@ -28,7 +29,36 @@ def mostrarPrestamos(listaPrestamos):
     for prestamo in listaPrestamos:
         print(f"DNI Usuario: {prestamo['dniUsuario']}, Codigo Libro: {prestamo['codigoLibro']}, Fecha Prestamo: {prestamo['fechaPrestamo']}, Fecha Devolucion: {prestamo['fechaDevolucion']}, Estado: {prestamo['estado']}")
     
+def buscarPrestamoPorDni(dni, listaPrestamos):
+    '''
+    Busca indice de un prestamo por su dni
+    Entrada: dni, listaPrestamos
+    Salida: prestamo o -1 si no existe
 
+    '''
+    for i in range(len(listaPrestamos)):
+        if listaPrestamos[i]['dniUsuario'] == dni and listaPrestamos[i]['estado'] == estadoPrestamo[1]:
+            return i
+    return -1
+
+def cambiarEstadoPrestamo(indice, listaPrestamos):
+    '''
+    Cambia el estado de un prestamo
+    Entrada: dni, listaPrestamos
+    Salida: lista de prestamos
+
+    '''
+
+    prestamo = listaPrestamos[indice]
+
+    prestamo['estado'] = estadoPrestamo[0]
+    
+    return prestamo
+   
+   
+   
+
+    
 def agregarPrestamo(listaUsuarios, listaLibros):
     '''
     Solicita los datos para un nuevo prestamo

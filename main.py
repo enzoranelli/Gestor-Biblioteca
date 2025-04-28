@@ -9,61 +9,6 @@ listaUsuarios = []
 
 #----------------------------------------------------------------------
 
-
-'''
-. Estructurar el MAIN, inicializacion de  variables
-· Añadir libros al inventario
-
-· Registrar nuevos usuarios 
-
-· Buscar libros por título, autor o año
-
-· Prestar y devolver libros
-
-· Ver libros disponibles
-
-· Mostrar usuarios y sus préstamos
-'''
-
-'''
-Tuplas:
-Categorias
-fechas
-
-Listas de diccionarios:
-libros = [ libro, libro, ...]
-usuarios = [ usuario, ...]
-prestamos = [ prestamo, ...]
-
-Diccionarios:
-libro = {
-    titulo : El principito,
-    autor,
-    categoria,
-    stock,
-    codigo
-}
-
-
-for i in range( len(lista)):
-
-    lista[]
-genero = 
-usuario = {
-    nombre,
-    dni,
-    prestamos : [matriz de prestamos]
-}
-
-prestamos = {
-    dniUsuario,
-    codigoLibro,
-    fechaPrestamo,
-    fechaDevolucion,
-    estado : (devuelto, sin devolver)
-}
-'''
-
 def imprimirMenu():
     '''
         Imprime el menu principal
@@ -99,7 +44,7 @@ while salir !=0:
                 print('Opcion invalida.')
     elif opcion == 2:
         #Submenu de usuarios
-        while opcionSubMenu != 3:
+        while opcionSubMenu != 4:
             usuarios.imprimirSubMenu()
             opcionSubMenu = int(input('Escribir opcion: '))
             if opcionSubMenu == 1:
@@ -108,11 +53,20 @@ while salir !=0:
             elif opcionSubMenu == 2:
                 usuarios.mostrarUsuarios(listaUsuarios)
             elif opcionSubMenu == 3:
+                dominioMail = input('Escribir dominio de correo: (ej: @hotmail.com): ')
+                usuariosPorMail = usuarios.obtenerUsuariosPorMail(dominioMail, listaUsuarios)
+                if len(usuariosPorMail) > 0:
+                    print('Usuarios encontrados:')
+                    usuarios.mostrarUsuarios(usuariosPorMail)
+                else:
+                    print('No se encontraron usuarios con ese dominio de correo')
+            elif opcionSubMenu == 4:
                 print('Volviendo al menu principal...')
             else:
                 print('Opcion invalida.')
     elif opcion == 3:
-        while opcionSubMenu != 3:
+        #Submenu de prestamos
+        while opcionSubMenu != 4:
             prestamos.imprimirSubMenu()
             opcionSubMenu = int(input('Escribir opcion: '))
             if opcionSubMenu == 1:
@@ -139,6 +93,23 @@ while salir !=0:
             elif opcionSubMenu == 2:
                 prestamos.mostrarPrestamos(listaPrestamos)
             elif opcionSubMenu == 3:
+                # Cambiar estado de prestamo segun dni y estado de prestamo
+                print('Cambiar estado de prestamo')
+
+                dni = input('Escribir DNI del usuario: ')
+                indice = prestamos.buscarPrestamoPorDni(dni, listaPrestamos)
+                if indice != -1:
+                    listaPrestamos[indice]=prestamos.cambiarEstadoPrestamo(indice, listaPrestamos)
+                    print('Estado de prestamo cambiado')
+                    indiceLibro = libros.indiceLibroPorCodigo(listaPrestamos[indice]['codigoLibro'], listaLibros)
+                    if indiceLibro != -1:
+                        listaLibros[indiceLibro]['stock'] += 1
+                        print(f'Stock actualizado: {listaLibros[indiceLibro]["stock"]}')
+                    else:
+                        print('No se encontro el libro')
+                else:
+                    print('No se encontro el prestamo')
+            elif opcionSubMenu == 4:
                 print('Volviendo al menu principal...') 
     else:
         print('Opcion invalida.')
