@@ -30,7 +30,7 @@ while salir !=0:
         salir = 0 
     elif opcion == 1:
         #Submenu de libros
-        while opcionSubMenu != 3:
+        while opcionSubMenu != 5:
             libros.imprimirSubMenu()
             opcionSubMenu = int(input('Escribir opcion: '))
             if opcionSubMenu == 1:
@@ -39,6 +39,11 @@ while salir !=0:
                 listaLibros.append(libros.agregarLibro(listaLibros))
                 print('Libro agregado\n')
             elif opcionSubMenu == 3:
+                libros.buscarLibroPorTitulo(listaLibros)
+            elif opcionSubMenu == 4:
+                libros.buscarLibroPorAutor(listaLibros)
+                
+            elif opcionSubMenu == 5:
                 print('Volviendo al menu principal...')
             else:
                 print('Opcion invalida.')

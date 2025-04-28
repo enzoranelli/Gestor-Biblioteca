@@ -72,7 +72,7 @@ def buscarLibroPorTitulo(listaLibros):
         for libro in librosEncontrados:
             print(f"\nTítulo: {libro['titulo']}")
             print(f"Autor: {libro['autor']}")
-            print(f"Categoría: {libro['categoria']}")
+            print(f"Genero: {libro['genero']}")
             print(f"Stock: {libro['stock']}")
             print(f"Código: {libro['codigo']}")
     else:
@@ -90,7 +90,7 @@ def buscarLibroPorAutor(listaLibros):
         for libro in librosEncontrados:
             print(f"\nTítulo: {libro['titulo']}")
             print(f"Autor: {libro['autor']}")
-            print(f"Categoría: {libro['categoria']}")
+            print(f"Genero: {libro['genero']}")
             print(f"Stock: {libro['stock']}")
             print(f"Código: {libro['codigo']}")
     else:
