@@ -43,6 +43,7 @@ def incializarLibros():
     return libros
 #----------------------------------------------------------------------
 
+
 def imprimirSubMenu():
     '''
     Imprime el menu de opciones de libros
@@ -53,8 +54,48 @@ def imprimirSubMenu():
     print('---------------------------')
     print("[1] Ver libros")
     print("[2] Agregar libro")
-    print("[3] Volver al menu principal")
+    print("[3] Buscar libro por título")
+    print("[4] Buscar libro por autor")
+    print("[5] Volver al menu principal")
     print('---------------------------')
+
+
+def buscarLibroPorTitulo(listaLibros):
+    '''
+    Busca libros por título e imprime su información completa
+    Entrada: lista de libros
+    Salida: vacío
+    '''
+    tituloBuscar = input("Ingrese el título a buscar: ").lower()
+    librosEncontrados = [libro for libro in listaLibros if tituloBuscar in libro['titulo'].lower()]
+    if librosEncontrados:
+        for libro in librosEncontrados:
+            print(f"\nTítulo: {libro['titulo']}")
+            print(f"Autor: {libro['autor']}")
+            print(f"Categoría: {libro['categoria']}")
+            print(f"Stock: {libro['stock']}")
+            print(f"Código: {libro['codigo']}")
+    else:
+        print("No se encontraron libros con ese título.")
+
+def buscarLibroPorAutor(listaLibros):
+    '''
+    Busca libros por autor e imprime su información completa
+    Entrada: lista de libros
+    Salida: vacío
+    '''
+    autorBuscar = input("Ingrese el autor a buscar: ").lower()
+    librosEncontrados = [libro for libro in listaLibros if autorBuscar in libro['autor'].lower()]
+    if librosEncontrados:
+        for libro in librosEncontrados:
+            print(f"\nTítulo: {libro['titulo']}")
+            print(f"Autor: {libro['autor']}")
+            print(f"Categoría: {libro['categoria']}")
+            print(f"Stock: {libro['stock']}")
+            print(f"Código: {libro['codigo']}")
+    else:
+        print("No se encontraron libros de ese autor.")
+        
 
 def agregarLibro(listaLibros):
     '''
