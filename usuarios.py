@@ -51,6 +51,19 @@ def validarDni(dni):
     '''
     return len(dni) <= 8 or not dni.isdigit()
 
+
+def buscarUsuarioPorDni(dni, listaUsuarios):
+    '''
+    Busca un usuario por su dni
+    Entrada: dni, listaUsuarios
+    Salida: usuario o -1 si no existe
+
+    '''
+    for usuario in listaUsuarios:
+        if usuario['dni'] == dni:
+            return usuario
+    return -1
+
 def dniExistente(dni, usuarios):
     '''
     Verifica si el DNI ya existe en la lista de usuarios

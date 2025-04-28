@@ -1,9 +1,9 @@
 import libros
 import usuarios
-
+import prestamos
 #--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
 
-listaLibros = []
+listaLibros = libros.incializarLibros()
 listaPrestamos = []
 listaUsuarios = []
 
@@ -111,6 +111,34 @@ while salir !=0:
                 print('Volviendo al menu principal...')
             else:
                 print('Opcion invalida.')
-    
+    elif opcion == 3:
+        while opcionSubMenu != 3:
+            prestamos.imprimirSubMenu()
+            opcionSubMenu = int(input('Escribir opcion: '))
+            if opcionSubMenu == 1:
+                prestamo = prestamos.agregarPrestamo(listaUsuarios, listaLibros)
+                if prestamo != -1:
+                    listaPrestamos.append(prestamo)
+                    # Actualizar stock del libro
+                    libro = libros.buscarLibroPorCodigo(prestamo['codigoLibro'], listaLibros)
+                    if libro != -1:
+                        if libro in listaLibros:
+                            libro['stock'] -= 1
+                            print(f'Stock actualizado: {libro["stock"]}')
+                    else:
+                        print('Libro no encontrado')
+                    # Agregar prestamo al usuario"
+                    usuario  = usuarios.buscarUsuarioPorDni(prestamo['dniUsuario'], listaUsuarios)
+                    if usuario != -1:
+                        usuario['prestamos'].append(prestamo)
+                    else:
+                        print('Usuario no encontrado')
+                    print('Prestamo agregado\n')
+                else:
+                    print('No se pudo agregar el prestamo')
+            elif opcionSubMenu == 2:
+                prestamos.mostrarPrestamos(listaPrestamos)
+            elif opcionSubMenu == 3:
+                print('Volviendo al menu principal...') 
     else:
         print('Opcion invalida.')

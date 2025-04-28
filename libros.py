@@ -1,7 +1,46 @@
+import random
 #--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
 
 generos = ('Novela contemporánea','Ciencia ficción','Fantasía','Terror','Misterio','Romance','Aventuras','Distopía','Realismo mágico','Otros')
 
+#----------------------------------------------------------------------
+#-----------------------DATOS DE PRUEBA--------------------------------
+libros = [
+    {"codigo": "1", "titulo": "1984", "autor": "George Orwell", "anio": 1949, "genero": "Ciencia ficción"},
+    {"codigo": "2", "titulo": "Don Quijote de la Mancha", "autor": "Miguel de Cervantes", "anio": 1605, "genero": "Novela contemporánea"},
+    {"codigo": "3", "titulo": "Cien años de soledad", "autor": "Gabriel García Márquez", "anio": 1967, "genero": "Realismo mágico"},
+    {"codigo": "4", "titulo": "La casa de los espíritus", "autor": "Isabel Allende", "anio": 1982, "genero": "Realismo mágico"},
+    {"codigo": "5", "titulo": "La sombra del viento", "autor": "Carlos Ruiz Zafón", "anio": 2001, "genero": "Misterio"},
+    {"codigo": "6", "titulo": "Ficciones", "autor": "Jorge Luis Borges", "anio": 1944, "genero": "Otros"},
+    {"codigo": "7", "titulo": "Pedro Páramo", "autor": "Juan Rulfo", "anio": 1955, "genero": "Realismo mágico"},
+    {"codigo": "8", "titulo": "El principito", "autor": "Antoine de Saint-Exupéry", "anio": 1943, "genero": "Fantasía"},
+    {"codigo": "9", "titulo": "El túnel", "autor": "Ernesto Sabato", "anio": 1948, "genero": "Novela contemporánea"},
+    {"codigo": "10", "titulo": "Rayuela", "autor": "Julio Cortázar", "anio": 1963, "genero": "Novela contemporánea"},
+    {"codigo": "11", "titulo": "It (Eso)", "autor": "Stephen King", "anio": 1986, "genero": "Terror"},
+    {"codigo": "12", "titulo": "El resplandor", "autor": "Stephen King", "anio": 1977, "genero": "Terror"},
+    {"codigo": "13", "titulo": "Drácula", "autor": "Bram Stoker", "anio": 1897, "genero": "Terror"},
+    {"codigo": "14", "titulo": "Frankenstein", "autor": "Mary Shelley", "anio": 1818, "genero": "Ciencia ficción"},
+    {"codigo": "15", "titulo": "La llamada de Cthulhu", "autor": "H.P. Lovecraft", "anio": 1928, "genero": "Terror"},
+    {"codigo": "16", "titulo": "El exorcista", "autor": "William Peter Blatty", "anio": 1971, "genero": "Terror"},
+    {"codigo": "17", "titulo": "El juego de Gerald", "autor": "Stephen King", "anio": 1992, "genero": "Terror"},
+    {"codigo": "18", "titulo": "La maldición de Hill House", "autor": "Shirley Jackson", "anio": 1959, "genero": "Terror"},
+    {"codigo": "19", "titulo": "El Horla", "autor": "Guy de Maupassant", "anio": 1887, "genero": "Terror"},
+    {"codigo": "20", "titulo": "La casa infernal", "autor": "Richard Matheson", "anio": 1971, "genero": "Terror"},
+    {"codigo": "21", "titulo": "Los 7 hábitos de la gente altamente efectiva", "autor": "Stephen R. Covey", "anio": 1989, "genero": "Otros"},
+    {"codigo": "22", "titulo": "Piense y hágase rico", "autor": "Napoleon Hill", "anio": 1937, "genero": "Otros"},
+    {"codigo": "23", "titulo": "Cómo ganar amigos e influir sobre las personas", "autor": "Dale Carnegie", "anio": 1936, "genero": "Otros"},
+    {"codigo": "24", "titulo": "El poder del ahora", "autor": "Eckhart Tolle", "anio": 1997, "genero": "Otros"},
+    {"codigo": "25", "titulo": "Tus zonas erróneas", "autor": "Wayne Dyer", "anio": 1976, "genero": "Otros"},
+    {"codigo": "26", "titulo": "Vivir la vida con sentido", "autor": "Viktor Frankl", "anio": 1946, "genero": "Otros"},
+    {"codigo": "27", "titulo": "La magia del orden", "autor": "Marie Kondo", "anio": 2011, "genero": "Otros"},
+    {"codigo": "28", "titulo": "Ámate a ti mismo como si tu vida dependiera de ello", "autor": "Kamal Ravikant", "anio": 2012, "genero": "Otros"},
+    {"codigo": "29", "titulo": "Despierta tu héroe interior", "autor": "Victor Hugo Manzanilla", "anio": 2014, "genero": "Otros"},
+    {"codigo": "30", "titulo": "Los secretos de la mente millonaria", "autor": "T. Harv Eker", "anio": 2005, "genero": "Otros"},
+]
+def incializarLibros():
+    for i in range(len(libros)):
+        libros[i]['stock'] = random.randint(5,20)
+    return libros
 #----------------------------------------------------------------------
 
 def imprimirSubMenu():
@@ -35,6 +74,18 @@ def agregarLibro(listaLibros):
         codigo = input("Codigo: ")
     
     return {"titulo": titulo, "autor": autor, "stock": stock, "codigo": codigo, "genero": genero}
+
+def buscarLibroPorCodigo(codigo, listaLibros):
+    '''
+    Busca un libro por su codigo
+    Entrada: codigo, listaLibros
+    Salida: libro o -1 si no existe
+
+    '''
+    for libro in listaLibros:
+        if libro['codigo'] == codigo:
+            return libro
+    return -1
 
 def elegirGenero():
     '''
