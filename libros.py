@@ -39,7 +39,7 @@ libros = [
 ]
 def incializarLibros():
     for i in range(len(libros)):
-        libros[i]['stock'] = random.randint(5,20)
+        libros[i]['stock'] = random.randint(0,20)
     return libros
 #----------------------------------------------------------------------
 
@@ -56,7 +56,8 @@ def imprimirSubMenu():
     print("[2] Agregar libro")
     print("[3] Buscar libro por título")
     print("[4] Buscar libro por autor")
-    print("[5] Volver al menu principal")
+    print("[5] Tabla de stock de libros")
+    print("[6] Volver al menu principal")
     print('---------------------------')
 
 
@@ -158,10 +159,46 @@ def elegirGenero():
         else:
             print("Opcion invalida. Intente nuevamente.")
        
+def tablaStockDeLibros(listaLibros):
+    '''
+    Muestra la tabla de stock de libros
+    Entrada: lista de libros
+    Salida: Vacio
+
+    '''
+    tabla = []
+    conStock = []
+    sinStock = []
+    for libro in listaLibros:
+        if libro['stock'] > 0:
+            conStock.append(libro)
+        else:
+            sinStock.append(libro)
+
+    tabla.append(conStock)
+    tabla.append(sinStock)
+    encabezado = 'Titulo\tAutor\tStock'
+    print("Libros con stock:\n")
+    
+    print(encabezado)
+    print('-----------------------------------------------')
+    
+    for i in range(len(tabla[0])):
+        libro = tabla[0][i]
+        print(f"{libro['titulo']} | {libro['autor']} | {libro['stock']}", end='\n')
+    print("\nLibros sin stock:\n")
+    print(encabezado)
+    print('-----------------------------------------------')
+    for i in range(len(tabla[1])):
+        libro = tabla[1][i]
+        print(f"{libro['titulo']} |  {libro['autor']} | {libro['stock']}", end='\n')
+            
+
+
 
 def codigoExistente(codigo, listaLibros):
     '''
-    Verifica si el codigo ya existe en la lista de libros
+    Verifica si el codigo ya existe en la lista de libros 
     Entrada: codigo, lista de libros
     Salida: True si existe, False si no existe
 
