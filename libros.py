@@ -39,7 +39,7 @@ libros = [
 ]
 def incializarLibros():
     for i in range(len(libros)):
-        libros[i]['stock'] = random.randint(0,20)
+        libros[i]['stock'] = random.randint(0,20) #Harcelo lambda
     return libros
 #----------------------------------------------------------------------
 
@@ -107,7 +107,11 @@ def agregarLibro(listaLibros):
     print("Agregar Libro")
     titulo = input("Titulo: ")
     autor = input("Autor: ")
-    stock = int(input("Stock: "))
+
+    stock = int(input("Stock: ")) # Agregar try catch
+
+    print("Stock invalido, debe ser un numero")
+ 
     genero = elegirGenero()
     codigo = input("Codigo: ")
     
