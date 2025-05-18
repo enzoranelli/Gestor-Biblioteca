@@ -35,7 +35,7 @@ def mostrarUsuarios(usuarios):
         print(f"Nombre: {usuario['nombre']}, Edad: {usuario['edad']}, Correo: {usuario['correo']},DNI: {usuario['dni']}")
 
 
-def agregarUsuario(usuarios):
+def cagarDatosUsuario(usuarios):
     '''
     
     Solicita los datos para un nuevo usuario

@@ -210,11 +210,11 @@ def codigoExistente(codigo, listaLibros):
 
 def mostrarLibros(listaLibros):
     '''
-    Muestra los libros en pantalla
+    Muestra los libros en formato de tabla usando alineación fija.
     Entrada: Vacio
     Salida: Vacio
-
     '''
-    print("Lista de Libros:")
+    print(f"{'Código':<6} | {'Título':<60} | {'Autor':<25} | {'Stock':<5} | {'Género'}")
+    print("-" * 150)
     for libro in listaLibros:
-        print(f"Titulo: {libro['titulo']}, Autor: {libro['autor']}, Stock: {libro['stock']}, Codigo: {libro['codigo']}, Genero: {libro['genero']}")
+        print(f"{libro['codigo']:<6} | {libro['titulo']:<60} | {libro['autor']:<25} | {libro['stock']:<5} | {libro['genero']}")

@@ -55,7 +55,7 @@ while salir !=0:
             usuarios.imprimirSubMenu()
             opcionSubMenu = int(input('Escribir opcion: '))
             if opcionSubMenu == 1:
-                listaUsuarios.append(usuarios.agregarUsuario(listaUsuarios))
+                listaUsuarios.append(usuarios.cagarDatosUsuario(listaUsuarios))
                 print('Usuario agregado\n')
             elif opcionSubMenu == 2:
                 usuarios.mostrarUsuarios(listaUsuarios)
