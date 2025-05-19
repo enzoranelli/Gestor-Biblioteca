@@ -30,9 +30,12 @@ def mostrarUsuarios(usuarios):
     Salida: Vacio
 
     '''
-    print("Lista de Usuarios:")
+
+    print("\nLista de Usuarios:\n")
+    print(f"{'Nombre':<20} | {'Edad':<5} | {'Correo':<30} | {'DNI'}")
+    print("-" * 95)
     for usuario in usuarios:
-        print(f"Nombre: {usuario['nombre']}, Edad: {usuario['edad']}, Correo: {usuario['correo']},DNI: {usuario['dni']}")
+        print(f"{usuario['nombre']:<20} | {usuario['edad']:<5} | {usuario['correo']:<30} | {usuario['dni']}")
 
 
 def cagarDatosUsuario(usuarios):

@@ -58,7 +58,10 @@ while salir !=0:
                 listaUsuarios.append(usuarios.cagarDatosUsuario(listaUsuarios))
                 print('Usuario agregado\n')
             elif opcionSubMenu == 2:
-                usuarios.mostrarUsuarios(listaUsuarios)
+                if len(listaUsuarios) > 0:
+                    usuarios.mostrarUsuarios(listaUsuarios)
+                else:
+                    print('No hay usuarios para mostrar')
             elif opcionSubMenu == 3:
                 dominioMail = input('Escribir dominio de correo: (ej: @hotmail.com): ')
                 usuariosPorMail = usuarios.obtenerUsuariosPorMail(dominioMail, listaUsuarios)
@@ -98,24 +101,23 @@ while salir !=0:
                 else:
                     print('No se pudo agregar el prestamo')
             elif opcionSubMenu == 2:
-                prestamos.mostrarPrestamos(listaPrestamos)
+                if len(listaPrestamos) > 0:
+                    prestamos.mostrarPrestamos(listaPrestamos)
+                else:
+                    print('No hay prestamos para mostrar')
+                
             elif opcionSubMenu == 3:
                 # Cambiar estado de prestamo segun dni y estado de prestamo
                 print('Cambiar estado de prestamo')
 
-                dni = input('Escribir DNI del usuario: ')
-                indice = prestamos.buscarPrestamoPorDni(dni, listaPrestamos)
-                if indice != -1:
-                    listaPrestamos[indice]=prestamos.cambiarEstadoPrestamo(indice, listaPrestamos)
-                    print('Estado de prestamo cambiado')
-                    indiceLibro = libros.indiceLibroPorCodigo(listaPrestamos[indice]['codigoLibro'], listaLibros)
+                prestamoDevuelto = prestamos.gestionarDevolucion(listaPrestamos, listaUsuarios)
+                if prestamoDevuelto:
+                    indiceLibro = libros.indiceLibroPorCodigo(prestamoDevuelto['codigoLibro'], listaLibros)
                     if indiceLibro != -1:
                         listaLibros[indiceLibro]['stock'] += 1
                         print(f'Stock actualizado: {listaLibros[indiceLibro]["stock"]}')
                     else:
-                        print('No se encontro el libro')
-                else:
-                    print('No se encontro el prestamo')
+                        print("No se encontró el libro para actualizar stock.")
             elif opcionSubMenu == 4:
                 print('Volviendo al menu principal...') 
     else:

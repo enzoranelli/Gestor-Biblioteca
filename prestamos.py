@@ -26,8 +26,11 @@ def mostrarPrestamos(listaPrestamos):
     Salida: Vacio
     '''
     print("Lista de Prestamos:")
+
+    print(f"{'DNI ':<10} | {'Código Libro':<10} | {'Fecha Préstamo':<15} | {'Fecha Devolución':<15} | {'Estado'}")
+    print("-" * 90)
     for prestamo in listaPrestamos:
-        print(f"DNI Usuario: {prestamo['dniUsuario']}, Codigo Libro: {prestamo['codigoLibro']}, Fecha Prestamo: {prestamo['fechaPrestamo']}, Fecha Devolucion: {prestamo['fechaDevolucion']}, Estado: {prestamo['estado']}")
+        print(f"{prestamo['dniUsuario']:<10} | {prestamo['codigoLibro']:<10} | {prestamo['fechaPrestamo']:<15} | {prestamo['fechaDevolucion']:<15} | {prestamo['estado']}")
     
 def buscarPrestamoPorDni(dni, listaPrestamos):
     '''
@@ -72,11 +75,12 @@ def agregarPrestamo(listaUsuarios, listaLibros):
         dniUsuario = input("DNI del usuario: ")
     
     codigoLibro = input("Codigo del libro: ")
-
-    while libros.buscarLibroPorCodigo(codigoLibro, listaLibros) == -1:
+    libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros) 
+    while libro == -1:
         print("Codigo invalido o no existe")
         codigoLibro = input("Codigo del libro: ")
-    libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros) 
+        libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros)
+    
     if(libro['stock'] <= 0):
         print("No hay stock disponible")
         return -1
@@ -110,7 +114,6 @@ def verificarFecha(fecha):
     if mes > 0 and mes <=12 and dia > 0 and dia<= diasPorMes[mes-1]:
         return True
     else:
-        print("Fecha invalida")
         return False
 
 def anioBisiesto(anio):
@@ -122,3 +125,38 @@ def anioBisiesto(anio):
     '''
     return (anio % 4 == 0 and anio % 100 != 0) or (anio % 400 == 0)
     
+def gestionarDevolucion(listaPrestamos, listaUsuarios):
+    '''
+    Permite al usuario elegir cuál préstamo desea devolver si tiene varios pendientes
+    Entrada: lista de préstamos y usuarios
+    Salida: préstamo actualizado o None si no se devolvió ninguno
+    '''
+    dni = input("Ingrese el DNI del usuario: ")
+    while usuarios.buscarUsuarioPorDni(dni, listaUsuarios) == -1:
+        print("DNI inválido o no encontrado.")
+        dni = input("Ingrese el DNI del usuario: ")
+
+    prestamosPendientes = [p for p in listaPrestamos if p['dniUsuario'] == dni and p['estado'] == estadoPrestamo[1]]
+
+    if len(prestamosPendientes) == 0:
+        print("El usuario no tiene préstamos pendientes.")
+        return None
+
+    print("\nPréstamos sin devolver:")
+    print(f"{'Opción':<8} | {'DNI Usuario':<12} | {'Código Libro':<14} | {'Fecha Préstamo':<18} | {'Fecha Devolución':<18} | {'Estado'}")
+    print("-" * 90)
+    for i, p in enumerate(prestamosPendientes):
+        print(f"[{i+1}]{'':<3} | {p['dniUsuario']:<12} | {p['codigoLibro']:<14} | {p['fechaPrestamo']:<18} | {p['fechaDevolucion']:<18} | {p['estado']}")
+
+    opcion = input("Seleccione el número del préstamo que desea marcar como devuelto: ")
+ 
+    while not opcion.isdigit() or int(opcion) < 1 or int(opcion) > len(prestamosPendientes):
+        print("Opción inválida.")
+        opcion = input("Seleccione el número del préstamo que desea marcar como devuelto: ")
+
+    opcion = int(opcion)
+    prestamoSeleccionado = prestamosPendientes[opcion - 1]
+    prestamoSeleccionado['estado'] = estadoPrestamo[0]
+    print("Préstamo actualizado como 'devuelto'.")
+
+    return prestamoSeleccionado

@@ -70,12 +70,7 @@ def buscarLibroPorTitulo(listaLibros):
     tituloBuscar = input("Ingrese el título a buscar: ").lower()
     librosEncontrados = [libro for libro in listaLibros if tituloBuscar in libro['titulo'].lower()]
     if librosEncontrados:
-        for libro in librosEncontrados:
-            print(f"\nTítulo: {libro['titulo']}")
-            print(f"Autor: {libro['autor']}")
-            print(f"Genero: {libro['genero']}")
-            print(f"Stock: {libro['stock']}")
-            print(f"Código: {libro['codigo']}")
+        mostrarLibros(librosEncontrados)
     else:
         print("No se encontraron libros con ese título.")
 
@@ -88,12 +83,7 @@ def buscarLibroPorAutor(listaLibros):
     autorBuscar = input("Ingrese el autor a buscar: ").lower()
     librosEncontrados = [libro for libro in listaLibros if autorBuscar in libro['autor'].lower()]
     if librosEncontrados:
-        for libro in librosEncontrados:
-            print(f"\nTítulo: {libro['titulo']}")
-            print(f"Autor: {libro['autor']}")
-            print(f"Genero: {libro['genero']}")
-            print(f"Stock: {libro['stock']}")
-            print(f"Código: {libro['codigo']}")
+        mostrarLibros(librosEncontrados)
     else:
         print("No se encontraron libros de ese autor.")
         
@@ -181,21 +171,22 @@ def tablaStockDeLibros(listaLibros):
 
     tabla.append(conStock)
     tabla.append(sinStock)
-    encabezado = 'Titulo\tAutor\tStock'
-    print("Libros con stock:\n")
+    #encabezado = 'Titulo\tAutor\tStock'
+    encabezado = f"{'Título':<60} | {'Autor':<25} | {'Stock':<5}"
+    print("\nLibros con stock:\n")
     
     print(encabezado)
-    print('-----------------------------------------------')
+    print('-'*95)
     
     for i in range(len(tabla[0])):
         libro = tabla[0][i]
-        print(f"{libro['titulo']} | {libro['autor']} | {libro['stock']}", end='\n')
+        print(f"{libro['titulo']:<60} | {libro['autor']:<25} | {libro['stock']:<5}", end='\n')
     print("\nLibros sin stock:\n")
     print(encabezado)
-    print('-----------------------------------------------')
+    print('-'*95)
     for i in range(len(tabla[1])):
         libro = tabla[1][i]
-        print(f"{libro['titulo']} |  {libro['autor']} | {libro['stock']}", end='\n')
+        print(f"{libro['titulo']:<60} |  {libro['autor']:<25} | {libro['stock']:<5}", end='\n')
             
 
 
@@ -218,6 +209,7 @@ def mostrarLibros(listaLibros):
     Entrada: Vacio
     Salida: Vacio
     '''
+    print("\nLista de Libros:")
     print(f"{'Código':<6} | {'Título':<60} | {'Autor':<25} | {'Stock':<5} | {'Género'}")
     print("-" * 150)
     for libro in listaLibros:
