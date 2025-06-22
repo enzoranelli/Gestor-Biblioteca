@@ -1,8 +1,9 @@
 import random
+import funcionesAuxiliares as f
 #--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
 
 generos = ('Novela contemporánea','Ciencia ficción','Fantasía','Terror','Misterio','Romance','Aventuras','Distopía','Realismo mágico','Otros')
-
+encabezados = ('codigo', 'titulo', 'autor', 'stock', 'genero')
 #----------------------------------------------------------------------
 #-----------------------DATOS DE PRUEBA--------------------------------
 libros = [
@@ -51,14 +52,14 @@ def imprimirSubMenu():
     Salida: Vacio
 
     '''
-    print('---------------------------')
+    f.imprimirLinea(30)
     print("[1] Ver libros")
     print("[2] Agregar libro")
     print("[3] Buscar libro por título")
     print("[4] Buscar libro por autor")
     print("[5] Tabla de stock de libros")
     print("[6] Volver al menu principal")
-    print('---------------------------')
+    f.imprimirLinea(30)
 
 
 def buscarLibroPorTitulo(listaLibros):
@@ -172,21 +173,22 @@ def tablaStockDeLibros(listaLibros):
     tabla.append(conStock)
     tabla.append(sinStock)
     #encabezado = 'Titulo\tAutor\tStock'
-    encabezado = f"{'Título':<60} | {'Autor':<25} | {'Stock':<5}"
+    encabezado = f"{f.agregarEspacios(60,encabezados[1])} | {f.agregarEspacios(25,encabezados[2])} | {f.agregarEspacios(5,encabezados[3])}"
+    
     print("\nLibros con stock:\n")
-    
     print(encabezado)
-    print('-'*95)
-    
+    f.imprimirLinea(95)
     for i in range(len(tabla[0])):
         libro = tabla[0][i]
-        print(f"{libro['titulo']:<60} | {libro['autor']:<25} | {libro['stock']:<5}", end='\n')
+        print(f"{f.agregarEspacios(60,libro[encabezados[1]])} | {f.agregarEspacios(25,libro[encabezados[2]])} | {f.agregarEspacios(5,libro[encabezado[3]])}", end='\n')
+
+
     print("\nLibros sin stock:\n")
     print(encabezado)
-    print('-'*95)
+    f.imprimirLinea(95)
     for i in range(len(tabla[1])):
         libro = tabla[1][i]
-        print(f"{libro['titulo']:<60} |  {libro['autor']:<25} | {libro['stock']:<5}", end='\n')
+        print(f"{f.agregarEspacios(60,libro[encabezados[1]])} | {f.agregarEspacios(25,libro[encabezados[2]])} | {f.agregarEspacios(5,libro[encabezado[3]])}", end='\n')
             
 
 
@@ -210,7 +212,7 @@ def mostrarLibros(listaLibros):
     Salida: Vacio
     '''
     print("\nLista de Libros:")
-    print(f"{'Código':<6} | {'Título':<60} | {'Autor':<25} | {'Stock':<5} | {'Género'}")
-    print("-" * 150)
+    print(f"{f.agregarEspacios(6,encabezados[0])} | {f.agregarEspacios(60,encabezados[1])} | {f.agregarEspacios(25,encabezados[2])} | {f.agregarEspacios(5,encabezados[3])} | {encabezados[4]}")
+    f.imprimirLinea(150)
     for libro in listaLibros:
-        print(f"{libro['codigo']:<6} | {libro['titulo']:<60} | {libro['autor']:<25} | {libro['stock']:<5} | {libro['genero']}")
+        print(f"{f.agregarEspacios(6,libro[encabezados[0]])} | {f.agregarEspacios(60,libro[encabezados[1]])} | {f.agregarEspacios(25,libro[encabezados[2]])} | {f.agregarEspacios(5,libro[encabezados[3]])} | {libro[encabezados[4]]}")
