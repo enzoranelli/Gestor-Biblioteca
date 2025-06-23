@@ -1,0 +1,23 @@
+[
+    {
+        "dniUsuario": "12345678",
+        "codigoLibro": 1,
+        "fechaPrestamo": "12/04/2025",
+        "fechaDevolucion": "25/04/2025",
+        "estado": "devuelto"
+    },
+    {
+        "dniUsuario": "12345678",
+        "codigoLibro": 4,
+        "fechaPrestamo": "12/12/2025",
+        "fechaDevolucion": "13/12/2025",
+        "estado": "devuelto"
+    },
+    {
+        "dniUsuario": "41172448",
+        "codigoLibro": 3,
+        "fechaPrestamo": "20/06/2025",
+        "fechaDevolucion": "27/06/2025",
+        "estado": "sin devolver"
+    }
+]

@@ -49,3 +49,19 @@ def actualizarDatos(nombreArchivo, listaDatos):
             archivo.write(json.dumps(listaDatos, indent=4))
     except Exception as e:
         print(f"Error al actualizar el archivo {nombreArchivo}: {e}")
+        
+def fechaVencida(fechaDevolucion, fechaActual):
+    '''
+        Verifica si una fecha de devolución está vencida en comparación con la fecha actual.
+        Entrada: fechaDevolucion(str) en formato 'DD/MM/AAAA', fechaActual(str) en formato 'DD/MM/AAAA'
+        Salida: True si la fecha de devolución es anterior a la fecha actual, False en caso contrario.
+    '''
+    diaDev, mesDev, anioDev = map(int, fechaDevolucion.split('/'))
+    diaAct, mesAct, anioAct = map(int, fechaActual.split('/'))
+    if anioDev < anioAct:
+        return True
+    elif anioDev == anioAct:
+        if mesDev < mesAct:
+            return True
+        elif mesDev == mesAct:
+            return diaDev < diaAct

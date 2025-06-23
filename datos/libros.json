@@ -5,7 +5,7 @@
         "autor": "George Orwell",
         "anio": 1949,
         "genero": "Ciencia ficci\u00f3n",
-        "stock": 8
+        "stock": 10
     },
     {
         "codigo": 2,
@@ -21,7 +21,7 @@
         "autor": "Gabriel Garc\u00eda M\u00e1rquez",
         "anio": 1967,
         "genero": "Realismo m\u00e1gico",
-        "stock": 10
+        "stock": 9
     },
     {
         "codigo": 4,
@@ -30,19 +30,5 @@
         "anio": 1982,
         "genero": "Realismo m\u00e1gico",
         "stock": 11
-    },
-    {
-        "titulo": "asd",
-        "autor": "asd",
-        "stock": 4,
-        "codigo": 10,
-        "genero": "Otros"
-    },
-    {
-        "titulo": "test",
-        "autor": "test",
-        "stock": 5,
-        "codigo": 45,
-        "genero": "Otros"
     }
 ]

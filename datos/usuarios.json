@@ -1,0 +1,39 @@
+[
+    {
+        "nombre": "enzo",
+        "edad": 12,
+        "correo": "enzo@gmail.com",
+        "dni": "12345678",
+        "prestamos": [
+            {
+                "dniUsuario": "12345678",
+                "codigoLibro": 1,
+                "fechaPrestamo": "12/04/2025",
+                "fechaDevolucion": "25/04/2025",
+                "estado": "devuelto"
+            },
+            {
+                "dniUsuario": "12345678",
+                "codigoLibro": 4,
+                "fechaPrestamo": "12/12/2025",
+                "fechaDevolucion": "13/12/2025",
+                "estado": "devuelto"
+            }
+        ]
+    },
+    {
+        "nombre": "Lucas Lopez",
+        "edad": 23,
+        "correo": "lucasl@uade.edu.ar",
+        "dni": "41172448",
+        "prestamos": [
+            {
+                "dniUsuario": "41172448",
+                "codigoLibro": 3,
+                "fechaPrestamo": "20/06/2025",
+                "fechaDevolucion": "27/06/2025",
+                "estado": "sin devolver"
+            }
+        ]
+    }
+]

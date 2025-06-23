@@ -1,6 +1,7 @@
 import libros
 import usuarios
 import funcionesAuxiliares as f
+import re
 #--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
 
 estadoPrestamo = ('devuelto', 'sin devolver')
@@ -13,12 +14,14 @@ def imprimirSubMenu():
     Salida: Vacio
 
     '''
-    print('---------------------------')
+    f.imprimirLinea(30)
     print("[1] Agregar Prestamo")
     print("[2] Mostrar Prestamos")
-    print('[3] Cambiar estado de prestamo')
-    print("[4] Volver al menu principal")
-    print('---------------------------')
+    print('[3] Gestionar devolucion de prestamos')
+    print("[4] Ver cantidad de prestamos activos")
+    print("[5] Ver prestamos vencidos")
+    print("[6] Volver al menu principal")
+    f.imprimirLinea(30)
 
 def mostrarPrestamos(listaPrestamos):
     '''
@@ -29,7 +32,7 @@ def mostrarPrestamos(listaPrestamos):
     print("Lista de Prestamos:")
 
     print(f"{f.agregarEspacios(10,"DNI")} | {f.agregarEspacios(10,"Código Libro")} | {f.agregarEspacios(15,"Fecha Préstamo")} | {f.agregarEspacios(15,"Fecha Devolución")} | {'Estado'}")
-    f.imprimirLinea()
+    f.imprimirLinea(90)
     for prestamo in listaPrestamos:
         print(f"{f.agregarEspacios(10,prestamo['dniUsuario'])} | {f.agregarEspacios(10,prestamo['codigoLibro'])} | {f.agregarEspacios(15,prestamo['fechaPrestamo'])} | {f.agregarEspacios(15,prestamo['fechaDevolucion'])} | {prestamo['estado']}")
     
@@ -75,11 +78,11 @@ def agregarPrestamo(listaUsuarios, listaLibros):
         print("DNI invalido o no existe")
         dniUsuario = input("DNI del usuario: ")
     
-    codigoLibro = input("Codigo del libro: ")
+    codigoLibro = int(input("Codigo del libro: "))
     libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros) 
     while libro == -1:
         print("Codigo invalido o no existe")
-        codigoLibro = input("Codigo del libro: ")
+        codigoLibro = int(input("Codigo del libro: "))
         libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros)
     
     if(libro['stock'] <= 0):
@@ -100,22 +103,28 @@ def agregarPrestamo(listaUsuarios, listaLibros):
 
 def verificarFecha(fecha):
     '''
-    Verifica si la fecha ingresada es valida
+    Verifica si la fecha ingresada es valida, primero el formato dd/mm/aaaa y luego si es una fecha real
     Entrada: fecha
     Salida: True si es valida, False si no lo es
 
     '''
-    dia, mes, anio = fecha.split('/')
-    dia = int(dia)
-    mes = int(mes)
-    anio = int(anio) 
-    diasPorMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]	
+    patron = r'^\d{2}/\d{2}/\d{4}$'
+    if not re.match(patron, fecha):
+        return False
+
+    try:
+        dia, mes, anio = map(int, fecha.split('/'))
+    except ValueError:
+        return False
+
+    diasPorMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
     if anioBisiesto(anio):
         diasPorMes[1] = 29
-    if mes > 0 and mes <=12 and dia > 0 and dia<= diasPorMes[mes-1]:
+
+    if 1 <= mes <= 12 and 1 <= dia <= diasPorMes[mes - 1]:
         return True
-    else:
-        return False
+    return False
 
 def anioBisiesto(anio):
     '''
@@ -126,7 +135,7 @@ def anioBisiesto(anio):
     '''
     return (anio % 4 == 0 and anio % 100 != 0) or (anio % 400 == 0)
     
-def gestionarDevolucion(listaPrestamos, listaUsuarios):
+def gestionarDevolucion(listaPrestamos, listaUsuarios, listaLibros):
     '''
     Permite al usuario elegir cuál préstamo desea devolver si tiene varios pendientes
     Entrada: lista de préstamos y usuarios
@@ -144,10 +153,11 @@ def gestionarDevolucion(listaPrestamos, listaUsuarios):
         return None
 
     print("\nPréstamos sin devolver:")
-    print(f"{f.agregarEspacios(8,"Opción")} | {f.agregarEspacios(12,'DNI Usuario')} | {f.agregarEspacios(14,'Código Libro')} | {f.agregarEspacios(18,'Fecha Préstamo')} | {f.agregarEspacios(18,'Fecha Devolución')} | {'Estado'}")
-    f.imprimirLinea(90)
+    print(f"{f.agregarEspacios(8,"Opción")} | {f.agregarEspacios(12,'DNI Usuario')} | {f.agregarEspacios(14,'Código Libro')} | {f.agregarEspacios(60,'Titulo')} | {f.agregarEspacios(18,'Fecha Préstamo')} | {f.agregarEspacios(18,'Fecha Devolución')} | {'Estado'}")
+    f.imprimirLinea(150)
     for i, p in enumerate(prestamosPendientes):
-        print(f"[{i+1}]{f.agregarEspacios(3,'')} | {f.agregarEspacios(12,p['dniUsuario'])} | {f.agregarEspacios(14,p['codigoLibro'])} | {f.agregarEspacios(18,p['fechaPrestamo'])} | {f.agregarEspacios(18,p['fechaDevolucion'])} | {p['estado']}")
+        tituloLibro = libros.buscarLibroPorCodigo(p['codigoLibro'], listaLibros)
+        print(f"[{i+1}]{f.agregarEspacios(4,'')} | {f.agregarEspacios(12,p['dniUsuario'])} | {f.agregarEspacios(14,p['codigoLibro'])} | {f.agregarEspacios(60,tituloLibro['titulo'])} |{f.agregarEspacios(18,p['fechaPrestamo'])} | {f.agregarEspacios(18,p['fechaDevolucion'])} | {p['estado']}")
 
     opcion = input("Seleccione el número del préstamo que desea marcar como devuelto: ")
  
@@ -158,6 +168,49 @@ def gestionarDevolucion(listaPrestamos, listaUsuarios):
     opcion = int(opcion)
     prestamoSeleccionado = prestamosPendientes[opcion - 1]
     prestamoSeleccionado['estado'] = estadoPrestamo[0]
-    print("Préstamo actualizado como 'devuelto'.")
+    for usuario in listaUsuarios:
+        if usuario['dni'] == prestamoSeleccionado['dniUsuario']:
+            for p in usuario['prestamos']:
+                if (
+                    p['codigoLibro'] == prestamoSeleccionado['codigoLibro'] and
+                    p['fechaPrestamo'] == prestamoSeleccionado['fechaPrestamo'] and
+                    p['fechaDevolucion'] == prestamoSeleccionado['fechaDevolucion'] and
+                    p['estado'] == estadoPrestamo[1]
+                ):
+                    p['estado'] = estadoPrestamo[0]
 
-    return prestamoSeleccionado
+    print("Préstamo actualizado como 'devuelto'.")
+    usuario = listaUsuarios[usuarios.indiceUsuarioPorDni(dni, listaUsuarios)]
+    return prestamoSeleccionado, usuario['prestamos']
+
+def prestamosVencidos(listaPrestamos):
+    '''
+    Muestra los prestamos vencidos
+    Entrada: lista de prestamos
+    Salida: lista de prestamos vencidos
+
+    '''
+    fechaActual = input("Ingrese la fecha actual (dd/mm/aaaa): ")
+    while not verificarFecha(fechaActual):
+        print("Fecha invalida")
+        fechaActual = input("Ingrese la fecha actual (dd/mm/aaaa): ")
+    
+    prestamosVencidos = []
+    for prestamo in listaPrestamos:
+        if prestamo['estado'] == estadoPrestamo[1]:
+            fechaDevolucion = prestamo['fechaDevolucion']
+            if  f.fechaVencida(fechaDevolucion, fechaActual):
+                prestamosVencidos.append(prestamo)
+    
+    return prestamosVencidos
+
+def mostrarCantidadPrestamosActivos(listaPrestamos):
+    '''
+    Muestra la cantidad de préstamos activos (no devueltos)
+    Entrada: lista de préstamos
+    Salida: None.
+    '''
+    pendientes = list(filter(lambda p: p['estado'] == estadoPrestamo[1], listaPrestamos))
+    cantidad = len(pendientes)
+    mostrarPrestamos(pendientes)
+    print(f"\nActualmente hay {cantidad} préstamos activos.\n")

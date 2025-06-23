@@ -1,5 +1,6 @@
 import random
 import funcionesAuxiliares as f
+import re 
 #--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
 
 generos = ('Novela contemporánea','Ciencia ficción','Fantasía','Terror','Misterio','Romance','Aventuras','Distopía','Realismo mágico','Otros')
@@ -96,11 +97,20 @@ def agregarLibro(listaLibros):
 
     '''
     print("Agregar Libro")
-    #Validar titulo y autor no esten vacios
-    titulo = input("Titulo: ")
-    autor = input("Autor: ")
-    stock = -1
+    #Validar titulo no este vacio
+    titulo = input("Titulo: ").strip()
+    while titulo == "":
+        print("El título no puede estar vacío.")
+        titulo = input("Titulo: ").strip()
+    #Validar autor no este vacio ni contenga numeros
+    autor = input("Autor: ").strip()
+    while autor == "" or not esAutorValido(autor):
+        print("El autor no puede estar vacío y debe contener solo letras (puede incluir tildes y espacios).")
+        autor = input("Autor: ").strip()
 
+
+    #Validar stock sea un numero positivo
+    stock = -1
     while stock < 0:        
         try:
             stock = int(input("Stock: "))  
@@ -108,24 +118,20 @@ def agregarLibro(listaLibros):
                 print("Debe ser un número positivo.")
         except ValueError:     
             print("Stock inválido, debe ser un número.")
-        
  
+ #Elegir genero y validar codigo unico
     genero = elegirGenero()
     codigo = -1
     verificarCodigo= True
-    while codigo < 0 or verificarCodigo:
-        
+    while codigo < 0 or verificarCodigo:     
         try:
-            # codifo <0 or ~True
+            # codigo <0 or ~True
             codigo = int(input("Codigo: "))
             verificarCodigo = codigoExistente(codigo, listaLibros)
             if codigo < 0:
                 print("El código debe ser un número positivo.")
         except ValueError:
-            print("Codigo invalido, debe ser un numero")
-        
-   
-    
+            print("Codigo invalido, debe ser un numero")         
     return {"titulo": titulo, "autor": autor, "stock": stock, "codigo": codigo, "genero": genero}
 
 def buscarLibroPorCodigo(codigo, listaLibros):
@@ -140,6 +146,17 @@ def buscarLibroPorCodigo(codigo, listaLibros):
             return libro
     return -1
 
+def tituloDeLibroPorCodigo(codigo, listaLibros):
+    '''
+    Busca el titulo de un libro por su codigo
+    Entrada: codigo, listaLibros
+    Salida: titulo o -1 si no existe
+
+    '''
+    for libro in listaLibros:
+        if libro['codigo'] == codigo:
+            return libro['titulo']
+    return -1
 def indiceLibroPorCodigo(codigo, listaLibros):
     '''
     Busca el indice de un libro por su codigo
@@ -151,6 +168,13 @@ def indiceLibroPorCodigo(codigo, listaLibros):
         if listaLibros[i]['codigo'] == codigo:
             return i
     return -1
+
+def esAutorValido(autor):
+    '''
+    Verifica si el autor contiene solo letras (con tildes) y espacios
+    '''
+    patron = r'^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ ]+$'
+    return re.match(patron, autor) is not None
 
 def elegirGenero():
     '''
@@ -200,7 +224,7 @@ def tablaStockDeLibros(listaLibros):
     f.imprimirLinea(95)
     for i in range(len(tabla[0])):
         libro = tabla[0][i]
-        print(f"{f.agregarEspacios(60,libro[encabezados[1]])} | {f.agregarEspacios(25,libro[encabezados[2]])} | {f.agregarEspacios(5,libro[encabezado[3]])}", end='\n')
+        print(f"{f.agregarEspacios(60,libro[encabezados[1]])} | {f.agregarEspacios(25,libro[encabezados[2]])} | {f.agregarEspacios(5,libro[encabezados[3]])}", end='\n')
 
 
     print("\nLibros sin stock:\n")
@@ -208,7 +232,7 @@ def tablaStockDeLibros(listaLibros):
     f.imprimirLinea(95)
     for i in range(len(tabla[1])):
         libro = tabla[1][i]
-        print(f"{f.agregarEspacios(60,libro[encabezados[1]])} | {f.agregarEspacios(25,libro[encabezados[2]])} | {f.agregarEspacios(5,libro[encabezado[3]])}", end='\n')
+        print(f"{f.agregarEspacios(60,libro[encabezados[1]])} | {f.agregarEspacios(25,libro[encabezados[2]])} | {f.agregarEspacios(5,libro[encabezados[3]])}", end='\n')
             
 
 

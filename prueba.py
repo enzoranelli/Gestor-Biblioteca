@@ -51,7 +51,6 @@ def validarNombre(nombre):
 
     return re.match(patron, nombre) is not None
    
-
 #Uso
 nombre = input("Nombre: ")
 while not validarNombre(nombre):
@@ -61,6 +60,16 @@ while not validarNombre(nombre):
 #Verificar campos obligatorios que no esten vacios
 
 
+def mostrarCantidadPrestamosActivos(listaPrestamos):
+    '''
+    Muestra la cantidad de préstamos activos (no devueltos)
+    Entrada: lista de préstamos
+    Salida: None.
+    '''
+
+    pendientes = list(filter(lambda p: p['estado'] == 'sin devolver', listaPrestamos))
+    cantidad = sum(1 for p in listaPrestamos if p['estado'] == 'sin devolver')
+    print(f"\nActualmente hay {cantidad} préstamos activos.\n")
 
 
 

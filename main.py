@@ -47,7 +47,6 @@ while salir !=0:
                     libros.buscarLibroPorAutor(listaLibros)
                 elif opcionSubMenu == 5:
                     libros.tablaStockDeLibros(listaLibros)
-                    print('Tabla de stock de libros')
                 elif opcionSubMenu == 6:
                     print('Volviendo al menu principal...')
                 else:
@@ -80,7 +79,7 @@ while salir !=0:
                     print('Opcion invalida.')
         elif opcion == 3:
             #Submenu de prestamos
-            while opcionSubMenu != 4:
+            while opcionSubMenu != 6:
                 prestamos.imprimirSubMenu()
                 opcionSubMenu = int(input('Escribir opcion: '))
                 if opcionSubMenu == 1:
@@ -101,6 +100,8 @@ while salir !=0:
                         usuario  = usuarios.buscarUsuarioPorDni(prestamo['dniUsuario'], listaUsuarios)
                         if usuario != -1:
                             usuario['prestamos'].append(prestamo)
+                            f.actualizarDatos('usuarios.json', listaUsuarios)
+                          
                         else:
                             print('Usuario no encontrado')
                         print('Prestamo agregado\n')
@@ -116,16 +117,29 @@ while salir !=0:
                     # Cambiar estado de prestamo segun dni y estado de prestamo
                     print('Cambiar estado de prestamo')
 
-                    prestamoDevuelto = prestamos.gestionarDevolucion(listaPrestamos, listaUsuarios)
-                    if prestamoDevuelto:
+                    prestamoDevuelto, prestamoUsuario = prestamos.gestionarDevolucion(listaPrestamos, listaUsuarios, listaLibros)
+                    if prestamoDevuelto and prestamoUsuario:
+                        f.actualizarDatos('prestamos.json', listaPrestamos)
+                        f.actualizarDatos('usuarios.json', listaUsuarios)
                         indiceLibro = libros.indiceLibroPorCodigo(prestamoDevuelto['codigoLibro'], listaLibros)
                         if indiceLibro != -1:
                             listaLibros[indiceLibro]['stock'] += 1
+                            f.actualizarDatos('libros.json', listaLibros)
                             print(f'Stock actualizado: {listaLibros[indiceLibro]["stock"]}')
                         else:
                             print("No se encontró el libro para actualizar stock.")
                 elif opcionSubMenu == 4:
-                    print('Volviendo al menu principal...') 
+                    prestamos.mostrarCantidadPrestamosActivos(listaPrestamos) 
+                elif opcionSubMenu == 5:
+                    print('Prestamos vencidos:')
+                    prestamosVencidos= prestamos.prestamosVencidos(listaPrestamos)
+                    if prestamosVencidos:
+                        prestamos.mostrarPrestamos(prestamosVencidos)
+                    else:
+                        print('No hay prestamos vencidos')
+                    
+                elif opcionSubMenu == 6:
+                    print ('volviendo al menu principal...')
         else:
             print('Opcion invalida.')
     except ValueError:

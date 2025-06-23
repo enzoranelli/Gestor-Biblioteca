@@ -24,7 +24,17 @@ def obtenerUsuariosPorMail(dominioMail, listaUsuarios):
     usuariosPorMail = [usuario for usuario in listaUsuarios if usuario['correo'][-len(dominioMail):] == dominioMail]
    
     return usuariosPorMail
+def indiceUsuarioPorDni(dni, listaUsuarios):
+    '''
+    Busca el indice de un usuario por su dni
+    Entrada: dni, listaUsuarios
+    Salida: indice del usuario o -1 si no existe
 
+    '''
+    for i in range(len(listaUsuarios)):
+        if listaUsuarios[i]['dni'] == dni:
+            return i
+    return -1
 def mostrarUsuarios(usuarios):
     '''
     Muestra los usuarios en pantalla
@@ -56,11 +66,13 @@ def cagarDatosUsuario(usuarios):
         nombre = input("Nombre: ")
 
     edad = -1
-    while edad < 0:
+    while edad <= 0 or edad > 109:
         try:
             edad = int(input("Edad: "))
-            if edad < 0:
+            if edad <= 0:
                 print("Debe ser un número positivo.")
+            elif edad > 109:
+                print ("Error, la edad debe ser menor a 110")  
         except ValueError:
             print("Edad invalida. Debe ser un numero entero.")
             edad = -1
@@ -68,14 +80,13 @@ def cagarDatosUsuario(usuarios):
     # Validar correo
     correo = input("Correo: ")
     while not validarCorreo(correo):
-        print("Correo inválido. Intente nuevamente.")
+        print("Correo inválido. Debe contener '@' y '.' con un dominio válido.")
         correo = input("Correo: ")
     #Agregar try a DNI 
-    dni = input("DNI: ")
+    dni = input("DNI: ").strip()
     while not validarDni(dni) or dniExistente(dni, usuarios):
-        print("DNI invalido o ya existe")
-        print("DNI debe tener 8 digitos")
-        dni = input("DNI: ")
+        print("DNI invalido o ya existe, debe tener 8 digitos")
+        dni = input("DNI: ").strip()
     return {"nombre": nombre, "edad": edad, "correo": correo, "dni": dni, "prestamos":[]}
 
 def validarDni(dni):
@@ -86,7 +97,7 @@ def validarDni(dni):
 
     '''
 
-    return len(dni) <= 8 or dni.isdigit()
+    return dni.isdigit() and len(dni) == 8
 
 def validarCorreo(correo):
     patron = r'^[\w\.-]+@[\w\.-]+\.\w{2,4}$'
