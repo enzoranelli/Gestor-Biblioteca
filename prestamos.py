@@ -1,5 +1,6 @@
 import libros
 import usuarios
+import funcionesAuxiliares as f
 #--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
 
 estadoPrestamo = ('devuelto', 'sin devolver')
@@ -27,10 +28,10 @@ def mostrarPrestamos(listaPrestamos):
     '''
     print("Lista de Prestamos:")
 
-    print(f"{'DNI ':<10} | {'Código Libro':<10} | {'Fecha Préstamo':<15} | {'Fecha Devolución':<15} | {'Estado'}")
-    print("-" * 90)
+    print(f"{f.agregarEspacios(10,"DNI")} | {f.agregarEspacios(10,"Código Libro")} | {f.agregarEspacios(15,"Fecha Préstamo")} | {f.agregarEspacios(15,"Fecha Devolución")} | {'Estado'}")
+    f.imprimirLinea()
     for prestamo in listaPrestamos:
-        print(f"{prestamo['dniUsuario']:<10} | {prestamo['codigoLibro']:<10} | {prestamo['fechaPrestamo']:<15} | {prestamo['fechaDevolucion']:<15} | {prestamo['estado']}")
+        print(f"{f.agregarEspacios(10,prestamo['dniUsuario'])} | {f.agregarEspacios(10,prestamo['codigoLibro'])} | {f.agregarEspacios(15,prestamo['fechaPrestamo'])} | {f.agregarEspacios(15,prestamo['fechaDevolucion'])} | {prestamo['estado']}")
     
 def buscarPrestamoPorDni(dni, listaPrestamos):
     '''
@@ -143,10 +144,10 @@ def gestionarDevolucion(listaPrestamos, listaUsuarios):
         return None
 
     print("\nPréstamos sin devolver:")
-    print(f"{'Opción':<8} | {'DNI Usuario':<12} | {'Código Libro':<14} | {'Fecha Préstamo':<18} | {'Fecha Devolución':<18} | {'Estado'}")
-    print("-" * 90)
+    print(f"{f.agregarEspacios(8,"Opción")} | {f.agregarEspacios(12,'DNI Usuario')} | {f.agregarEspacios(14,'Código Libro')} | {f.agregarEspacios(18,'Fecha Préstamo')} | {f.agregarEspacios(18,'Fecha Devolución')} | {'Estado'}")
+    f.imprimirLinea(90)
     for i, p in enumerate(prestamosPendientes):
-        print(f"[{i+1}]{'':<3} | {p['dniUsuario']:<12} | {p['codigoLibro']:<14} | {p['fechaPrestamo']:<18} | {p['fechaDevolucion']:<18} | {p['estado']}")
+        print(f"[{i+1}]{f.agregarEspacios(3,'')} | {f.agregarEspacios(12,p['dniUsuario'])} | {f.agregarEspacios(14,p['codigoLibro'])} | {f.agregarEspacios(18,p['fechaPrestamo'])} | {f.agregarEspacios(18,p['fechaDevolucion'])} | {p['estado']}")
 
     opcion = input("Seleccione el número del préstamo que desea marcar como devuelto: ")
  

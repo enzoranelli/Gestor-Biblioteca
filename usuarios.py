@@ -1,3 +1,5 @@
+import funcionesAuxiliares as f
+import re
 def imprimirSubMenu():
     '''
         Imprime el menu de opciones de usuarios
@@ -5,12 +7,12 @@ def imprimirSubMenu():
         Salida: Vacio
 
     '''
-    print('---------------------------')
+    f.imprimirLinea(30)
     print('[1] Agregar Usuario')
     print('[2] Mostrar Usuarios')
     print('[3] Buscar usuarios por dominio de correo')
     print('[4] Volver al menu principal')
-    print('---------------------------')
+    f.imprimirLinea(30)
 
 def obtenerUsuariosPorMail(dominioMail, listaUsuarios):
     '''
@@ -32,10 +34,10 @@ def mostrarUsuarios(usuarios):
     '''
 
     print("\nLista de Usuarios:\n")
-    print(f"{'Nombre':<20} | {'Edad':<5} | {'Correo':<30} | {'DNI'}")
-    print("-" * 95)
+    print(f"{f.agregarEspacios(20,'Nombre')} | {f.agregarEspacios(5,'Edad')} | {f.agregarEspacios(30,'Correo')} | {'DNI'}")
+    f.imprimirLinea(90)
     for usuario in usuarios:
-        print(f"{usuario['nombre']:<20} | {usuario['edad']:<5} | {usuario['correo']:<30} | {usuario['dni']}")
+        print(f"{f.agregarEspacios(20,usuario['nombre'])} | {f.agregarEspacios(5,usuario['edad'])} | {f.agregarEspacios(30,usuario['correo'])} | {usuario['dni']}")
 
 
 def cagarDatosUsuario(usuarios):
@@ -47,9 +49,28 @@ def cagarDatosUsuario(usuarios):
     '''
 
     print("Agregar Usuario")
+
     nombre = input("Nombre: ")
-    edad = int(input("Edad: "))
+    while not validarNombre(nombre):
+        print("Nombre invalido. Solo letras y espacios.")
+        nombre = input("Nombre: ")
+
+    edad = -1
+    while edad < 0:
+        try:
+            edad = int(input("Edad: "))
+            if edad < 0:
+                print("Debe ser un número positivo.")
+        except ValueError:
+            print("Edad invalida. Debe ser un numero entero.")
+            edad = -1
+
+    # Validar correo
     correo = input("Correo: ")
+    while not validarCorreo(correo):
+        print("Correo inválido. Intente nuevamente.")
+        correo = input("Correo: ")
+    #Agregar try a DNI 
     dni = input("DNI: ")
     while not validarDni(dni) or dniExistente(dni, usuarios):
         print("DNI invalido o ya existe")
@@ -67,6 +88,9 @@ def validarDni(dni):
 
     return len(dni) <= 8 or dni.isdigit()
 
+def validarCorreo(correo):
+    patron = r'^[\w\.-]+@[\w\.-]+\.\w{2,4}$'
+    return re.match(patron, correo) is not None
 
 def buscarUsuarioPorDni(dni, listaUsuarios):
     '''
@@ -92,3 +116,18 @@ def dniExistente(dni, usuarios):
             return True
     return False
        
+
+def validarNombre(nombre):
+
+    '''
+    Valida que el nombre solo contenga letras y espacios
+    Entrada: nombre
+    Salida: True si es valido, False si no lo es
+
+    '''
+    if not nombre.strip():
+        return False
+    patron = r'^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$'
+
+    return re.match(patron, nombre) is not None
+   

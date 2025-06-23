@@ -26,13 +26,26 @@ def inicializarDatos(nombreArchivo):
         Salida: lista de datos cargados del archivo o una lista vacia si el archivo no existe.
     '''
     try:
-        with open(nombreArchivo, 'r') as file:
+        with open('./datos/'+nombreArchivo, 'r', encoding='UTF-8') as file:
             return json.load(file)
     except FileNotFoundError:
         print(f"El archivo {nombreArchivo} no existe. Se creará una lista vacía.")
         return []  
     except PermissionError:
-        print(f"Sin permiso para leer el archivo {nombreArchivo}.")
+        print(f"Sin permiso para leer el archivo {nombreArchivo}. Se creará una lista vacía.")
         return []  
     except Exception as e:
-        print(f"Erro inesperado al leer el archivo {nombreArchivo}: {e}vf")
+        print(f"Error inesperado al leer el archivo {nombreArchivo}: {e}. Se creará una lista vacía.")
+        return []
+    
+def actualizarDatos(nombreArchivo, listaDatos):
+    '''
+        Actualiza los datos de un archivo JSON.
+        Entrada: nombreArchivo(str), listaDatos(list)
+        Salida: Vacio
+    '''
+    try:
+        with open('./datos/'+nombreArchivo, 'w', encoding='UTF-8') as archivo:
+            archivo.write(json.dumps(listaDatos, indent=4))
+    except Exception as e:
+        print(f"Error al actualizar el archivo {nombreArchivo}: {e}")

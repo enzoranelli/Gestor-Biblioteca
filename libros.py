@@ -96,19 +96,35 @@ def agregarLibro(listaLibros):
 
     '''
     print("Agregar Libro")
+    #Validar titulo y autor no esten vacios
     titulo = input("Titulo: ")
     autor = input("Autor: ")
+    stock = -1
 
-    stock = int(input("Stock: ")) # Agregar try catch
-
-    print("Stock invalido, debe ser un numero")
+    while stock < 0:        
+        try:
+            stock = int(input("Stock: "))  
+            if stock < 0:
+                print("Debe ser un número positivo.")
+        except ValueError:     
+            print("Stock inválido, debe ser un número.")
+        
  
     genero = elegirGenero()
-    codigo = input("Codigo: ")
-    
-    while codigoExistente(codigo, listaLibros):
-        print("Codigo invalido, ya existe")
-        codigo = input("Codigo: ")
+    codigo = -1
+    verificarCodigo= True
+    while codigo < 0 or verificarCodigo:
+        
+        try:
+            # codifo <0 or ~True
+            codigo = int(input("Codigo: "))
+            verificarCodigo = codigoExistente(codigo, listaLibros)
+            if codigo < 0:
+                print("El código debe ser un número positivo.")
+        except ValueError:
+            print("Codigo invalido, debe ser un numero")
+        
+   
     
     return {"titulo": titulo, "autor": autor, "stock": stock, "codigo": codigo, "genero": genero}
 
@@ -148,11 +164,15 @@ def elegirGenero():
         print(f"[{i}] {genero}")
     opcion = -1
     while opcion < len(generos) or opcion > len(generos):
-        opcion = int(input("Opcion: "))
-        if 0 <= opcion < len(generos):
-            return generos[opcion]
-        else:
-            print("Opcion invalida. Intente nuevamente.")
+        try:
+            opcion = int(input("Opcion: "))
+            if 0 <= opcion < len(generos):
+                return generos[opcion]
+            else:
+                print("Opcion invalida. Intente nuevamente.")
+        except ValueError:
+            print("Entrada inválida. Debe ingresar un número entero.")
+            opcion = -1
        
 def tablaStockDeLibros(listaLibros):
     '''
@@ -202,6 +222,7 @@ def codigoExistente(codigo, listaLibros):
     '''
     for libro in listaLibros:
         if libro['codigo'] == codigo:
+            print("El código ya existe. Por favor, ingrese un código diferente.")
             return True
     return False
 

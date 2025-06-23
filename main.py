@@ -4,9 +4,9 @@ import prestamos
 import funcionesAuxiliares as f
 #--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
 
-listaLibros = libros.incializarLibros()
-listaPrestamos = []
-listaUsuarios = []
+listaLibros = f.inicializarDatos('libros.json')
+listaPrestamos = f.inicializarDatos('prestamos.json')
+listaUsuarios = f.inicializarDatos('usuarios.json')
 
 #----------------------------------------------------------------------
 
@@ -39,6 +39,7 @@ while salir !=0:
                     libros.mostrarLibros(listaLibros)
                 elif opcionSubMenu == 2:
                     listaLibros.append(libros.agregarLibro(listaLibros))
+                    f.actualizarDatos('libros.json', listaLibros)
                     print('Libro agregado\n')
                 elif opcionSubMenu == 3:
                     libros.buscarLibroPorTitulo(listaLibros)
@@ -58,6 +59,7 @@ while salir !=0:
                 opcionSubMenu = int(input('Escribir opcion: '))
                 if opcionSubMenu == 1:
                     listaUsuarios.append(usuarios.cagarDatosUsuario(listaUsuarios))
+                    f.actualizarDatos('usuarios.json', listaUsuarios)
                     print('Usuario agregado\n')
                 elif opcionSubMenu == 2:
                     if len(listaUsuarios) > 0:
@@ -84,7 +86,9 @@ while salir !=0:
                 if opcionSubMenu == 1:
                     prestamo = prestamos.agregarPrestamo(listaUsuarios, listaLibros)
                     if prestamo != -1:
+
                         listaPrestamos.append(prestamo)
+                        f.actualizarDatos('prestamos.json', listaPrestamos)
                         # Actualizar stock del libro
                         libro = libros.buscarLibroPorCodigo(prestamo['codigoLibro'], listaLibros)
                         if libro != -1:
@@ -125,4 +129,4 @@ while salir !=0:
         else:
             print('Opcion invalida.')
     except ValueError:
-        print('Error: Debe ingresar un numero entero.')
+        print('Error: Debe ingresar un numero entero.')  
