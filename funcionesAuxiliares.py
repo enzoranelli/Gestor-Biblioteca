@@ -65,3 +65,14 @@ def fechaVencida(fechaDevolucion, fechaActual):
             return True
         elif mesDev == mesAct:
             return diaDev < diaAct
+
+def registrarExcepcion(e, lugar):
+    try:
+        archivo = open('errores.log','a')
+        try:
+            error = f"Tipo de error: {type(e)} - Mensaje:{str(e)} - Lugar: {lugar}\n"
+            archivo.write(error)
+        finally:
+            archivo.close()
+    except Exception as logError:
+        print(f"Error al escribir en el log: {logError}")

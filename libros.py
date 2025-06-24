@@ -1,6 +1,7 @@
 import random
 import funcionesAuxiliares as f
 import re 
+from functools import reduce
 #--------------VARIABLES DE INICIALIZACION Y CONSTANTES-----------------
 
 generos = ('Novela contemporánea','Ciencia ficción','Fantasía','Terror','Misterio','Romance','Aventuras','Distopía','Realismo mágico','Otros')
@@ -69,12 +70,13 @@ def buscarLibroPorTitulo(listaLibros):
     Entrada: lista de libros
     Salida: vacío
     '''
-    tituloBuscar = input("Ingrese el título a buscar: ").lower()
+    tituloBuscar = input("Ingrese el título del libro: ").lower()
+    while not tituloBuscar.strip():
+        print("El título no puede estar vacío.")
+        tituloBuscar = input("Ingrese el título del libro: ")
+  
     librosEncontrados = [libro for libro in listaLibros if tituloBuscar in libro['titulo'].lower()]
-    if librosEncontrados:
-        mostrarLibros(librosEncontrados)
-    else:
-        print("No se encontraron libros con ese título.")
+    return librosEncontrados
 
 def buscarLibroPorAutor(listaLibros):
     '''
@@ -105,7 +107,7 @@ def agregarLibro(listaLibros):
     #Validar autor no este vacio ni contenga numeros
     autor = input("Autor: ").strip()
     while autor == "" or not esAutorValido(autor):
-        print("El autor no puede estar vacío y debe contener solo letras (puede incluir tildes y espacios).")
+        print("El autor no puede estar vacío, tener al menos 3 letras y contener solo letras (puede incluir tildes y espacios).")
         autor = input("Autor: ").strip()
 
 
@@ -117,23 +119,28 @@ def agregarLibro(listaLibros):
             if stock < 0:
                 print("Debe ser un número positivo.")
         except ValueError:     
+            f.registrarExcepcion(ValueError, "agregarLibro")
             print("Stock inválido, debe ser un número.")
  
  #Elegir genero y validar codigo unico
     genero = elegirGenero()
-    codigo = -1
-    verificarCodigo= True
-    while codigo < 0 or verificarCodigo:     
-        try:
-            # codigo <0 or ~True
-            codigo = int(input("Codigo: "))
-            verificarCodigo = codigoExistente(codigo, listaLibros)
-            if codigo < 0:
-                print("El código debe ser un número positivo.")
-        except ValueError:
-            print("Codigo invalido, debe ser un numero")         
+    codigo = generarCodigoUnico(listaLibros)
+    
     return {"titulo": titulo, "autor": autor, "stock": stock, "codigo": codigo, "genero": genero}
 
+def generarCodigoUnico(listaLibros):
+    '''
+    Genera un codigo unico para un libro
+    Entrada: lista de libros
+    Salida: codigo unico
+
+    '''
+    if len(listaLibros) == 0:
+        return 1
+    else:
+        codigo = reduce(lambda x, y: max(x, int(y['codigo'])), listaLibros, 0) + 1
+        return codigo
+    
 def buscarLibroPorCodigo(codigo, listaLibros):
     '''
     Busca un libro por su codigo
@@ -173,7 +180,7 @@ def esAutorValido(autor):
     '''
     Verifica si el autor contiene solo letras (con tildes) y espacios
     '''
-    patron = r'^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ ]+$'
+    patron = r'^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ ]{3,}$'
     return re.match(patron, autor) is not None
 
 def elegirGenero():
@@ -195,6 +202,7 @@ def elegirGenero():
             else:
                 print("Opcion invalida. Intente nuevamente.")
         except ValueError:
+            f.registrarExcepcion(ValueError, "elegirGenero")
             print("Entrada inválida. Debe ingresar un número entero.")
             opcion = -1
        

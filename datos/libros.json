@@ -30,5 +30,19 @@
         "anio": 1982,
         "genero": "Realismo m\u00e1gico",
         "stock": 11
+    },
+    {
+        "titulo": "test",
+        "autor": "test",
+        "stock": 5,
+        "codigo": 5,
+        "genero": "Fantas\u00eda"
+    },
+    {
+        "titulo": "asd",
+        "autor": "sdfg",
+        "stock": 4,
+        "codigo": 6,
+        "genero": "Romance"
     }
 ]

@@ -78,12 +78,20 @@ def agregarPrestamo(listaUsuarios, listaLibros):
         print("DNI invalido o no existe")
         dniUsuario = input("DNI del usuario: ")
     
-    codigoLibro = int(input("Codigo del libro: "))
-    libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros) 
-    while libro == -1:
-        print("Codigo invalido o no existe")
+    buscarCodigo = input("Desea buscar el libro por codigo? (S/N): ").strip().upper()
+    while buscarCodigo not in ['S', 'N']:
+        print("Opcion invalida. Ingrese S o N.")
+        buscarCodigo = input("Desea buscar el libro por codigo? (S/N): ").strip().upper()
+    if buscarCodigo == 'S':
+        codigoLibro = consultarCodigoPorTitulo(listaLibros)
+        libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros) 
+    else:
         codigoLibro = int(input("Codigo del libro: "))
-        libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros)
+        libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros) 
+        while libro == -1:
+            print("Codigo invalido o no existe")
+            codigoLibro = int(input("Codigo del libro: "))
+            libro = libros.buscarLibroPorCodigo(codigoLibro, listaLibros)
     
     if(libro['stock'] <= 0):
         print("No hay stock disponible")
@@ -115,6 +123,7 @@ def verificarFecha(fecha):
     try:
         dia, mes, anio = map(int, fecha.split('/'))
     except ValueError:
+        f.registrarExcepcion(ValueError, 'verificarFecha')
         return False
 
     diasPorMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -135,6 +144,52 @@ def anioBisiesto(anio):
     '''
     return (anio % 4 == 0 and anio % 100 != 0) or (anio % 400 == 0)
     
+def consultarCodigoPorTitulo(listaLibros):
+    '''
+    Busca un libro por su codigo
+    Entrada: Vacio
+    Salida: codigo
+
+    '''
+    librosEncontrados = []
+    opcion = -1
+
+    while opcion == -1:
+        while not librosEncontrados:
+            librosEncontrados = libros.buscarLibroPorTitulo(listaLibros)
+            if not librosEncontrados:
+                print("No se encontraron libros con ese título. Intente nuevamente.")
+
+        print(f"{f.agregarEspacios(8,'Opción')} | {f.agregarEspacios(60,'Título')} | {f.agregarEspacios(25,'Autor')} | {f.agregarEspacios(10,'Código')} | {f.agregarEspacios(10,'Stock')} | {'Género'}")
+        f.imprimirLinea(130)
+
+        print(f"[0]{f.agregarEspacios(4,'')} | Nueva búsqueda")
+
+        for i, libro in enumerate(librosEncontrados):
+            print(
+                f"[{i+1}]{f.agregarEspacios(4,'')} | "
+                f"{f.agregarEspacios(60, libro['titulo'])} | "
+                f"{f.agregarEspacios(25, libro['autor'])} | "
+                f"{f.agregarEspacios(10, str(libro['codigo']))} | "
+                f"{f.agregarEspacios(10, str(libro['stock']))} | "
+                f"{libro['genero']}"
+            )
+
+        entrada = input("Seleccione la opción (0 para nueva búsqueda): ")
+
+        if entrada.isdigit():
+            entrada = int(entrada)
+            if entrada == 0:
+                librosEncontrados = []  # nueva búsqueda
+            elif 1 <= entrada <= len(librosEncontrados):
+                opcion = entrada
+            else:
+                print("Opción inválida. Intente nuevamente.")
+        else:
+            print("Entrada inválida. Debe ingresar un número.")
+            
+
+    return librosEncontrados[opcion - 1]['codigo']
 def gestionarDevolucion(listaPrestamos, listaUsuarios, listaLibros):
     '''
     Permite al usuario elegir cuál préstamo desea devolver si tiene varios pendientes

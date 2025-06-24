@@ -60,10 +60,10 @@ def cagarDatosUsuario(usuarios):
 
     print("Agregar Usuario")
 
-    nombre = input("Nombre: ")
+    nombre = input("Nombre: ").strip()
     while not validarNombre(nombre):
         print("Nombre invalido. Solo letras y espacios.")
-        nombre = input("Nombre: ")
+        nombre = input("Nombre: ").strip()
 
     edad = -1
     while edad <= 0 or edad > 109:
@@ -74,6 +74,7 @@ def cagarDatosUsuario(usuarios):
             elif edad > 109:
                 print ("Error, la edad debe ser menor a 110")  
         except ValueError:
+            f.registrarExcepcion(ValueError, "cagarDatosUsuario")
             print("Edad invalida. Debe ser un numero entero.")
             edad = -1
 
@@ -138,7 +139,7 @@ def validarNombre(nombre):
     '''
     if not nombre.strip():
         return False
-    patron = r'^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$'
+    patron = r'^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{3,}$'
 
     return re.match(patron, nombre) is not None
    

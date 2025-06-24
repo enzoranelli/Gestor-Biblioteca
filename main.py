@@ -44,7 +44,8 @@ while salir !=0:
                 elif opcionSubMenu == 3:
                     libros.buscarLibroPorTitulo(listaLibros)
                 elif opcionSubMenu == 4:
-                    libros.buscarLibroPorAutor(listaLibros)
+                    librosEncontrados = libros.buscarLibroPorAutor(listaLibros)
+                    libros.mostrarLibros(librosEncontrados)
                 elif opcionSubMenu == 5:
                     libros.tablaStockDeLibros(listaLibros)
                 elif opcionSubMenu == 6:
@@ -143,4 +144,5 @@ while salir !=0:
         else:
             print('Opcion invalida.')
     except ValueError:
+        f.registrarExcepcion(ValueError, 'main.py')
         print('Error: Debe ingresar un numero entero.')  

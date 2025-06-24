@@ -19,5 +19,26 @@
         "fechaPrestamo": "20/06/2025",
         "fechaDevolucion": "27/06/2025",
         "estado": "sin devolver"
+    },
+    {
+        "dniUsuario": "12345678",
+        "codigoLibro": 2,
+        "fechaPrestamo": "12/12/2024",
+        "fechaDevolucion": "12/12/2025",
+        "estado": "sin devolver"
+    },
+    {
+        "dniUsuario": "12345678",
+        "codigoLibro": 3,
+        "fechaPrestamo": "12/12/2024",
+        "fechaDevolucion": "12/12/2025",
+        "estado": "sin devolver"
+    },
+    {
+        "dniUsuario": "12345678",
+        "codigoLibro": 4,
+        "fechaPrestamo": "12/12/2024",
+        "fechaDevolucion": "23/12/2025",
+        "estado": "sin devolver"
     }
 ]
